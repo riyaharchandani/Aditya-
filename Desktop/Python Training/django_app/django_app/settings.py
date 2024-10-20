@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 import dj_database_url
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,10 +22,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-7=r!ivhy&=i3@3pal_1v$evp$bo&y%=#66y_+!7ucud(0d0-!='
-
+# SECRET_KEY = 'django-insecure-7=r!ivhy&=i3@3pal_1v$evp$bo&y%=#66y_+!7ucud(0d0-!='
+SECRET_KEY = os.environ.get('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DEBUG',False).lower() == True
 
 
 # Application definition
@@ -86,7 +87,9 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3', #NAME: The name of the database file (for SQLite).
     }
 }
-DATABASES['default'] = dj_database_url.parse('postgresql://django_db_y8f9_user:hoTomN7YahjrcmxX6vi9CyADUW0Kvw8w@dpg-csaa3gg8fa8c73clrse0-a.singapore-postgres.render.com/django_db_y8f9')
+databaseURL = os.environ.get('DATABASE_URL')
+DATABASES['default'] = dj_database_url.parse(databaseURL)
+# DATABASES['default'] = dj_database_url.parse('postgresql://django_db_y8f9_user:hoTomN7YahjrcmxX6vi9CyADUW0Kvw8w@dpg-csaa3gg8fa8c73clrse0-a.singapore-postgres.render.com/django_db_y8f9')
 # The above code is the default database configuration that Django uses when you first create a project.
 
 # Password validation
